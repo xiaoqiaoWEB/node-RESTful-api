@@ -1,0 +1,26 @@
+{
+  "name": "node",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://xiaoqiaoWEB@github.com/xiaoqiaoWEB/node-RESTful-api.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/xiaoqiaoWEB/node-RESTful-api/issues"
+  },
+  "homepage": "https://github.com/xiaoqiaoWEB/node-RESTful-api#readme",
+  "dependencies": {
+    "koa": "^2.11.0",
+    "koa-router": "^8.0.8"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.2"
+  }
+}
