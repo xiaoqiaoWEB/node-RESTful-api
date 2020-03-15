@@ -18,11 +18,13 @@
   },
   "homepage": "https://github.com/xiaoqiaoWEB/node-RESTful-api#readme",
   "dependencies": {
+    "jsonwebtoken": "^8.5.1",
     "koa": "^2.11.0",
     "koa-bodyparser": "^4.2.1",
     "koa-json-error": "^3.1.2",
     "koa-parameter": "^3.0.1",
-    "koa-router": "^8.0.8"
+    "koa-router": "^8.0.8",
+    "mongoose": "^5.9.4"
   },
   "devDependencies": {
     "cross-env": "^7.0.2",
