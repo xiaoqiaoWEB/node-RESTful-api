@@ -1,3 +1,3 @@
 module.exports = {
-  screat: 'haixu-jwt-screate'
+  secret: 'dddd-jwt-screate'
 }
