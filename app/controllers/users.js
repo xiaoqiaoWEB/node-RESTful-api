@@ -1,16 +1,19 @@
 const User = require('../model/users')
 const jswebtoken = require('jsonwebtoken')
-const { screat } = require('../config')
+const { secret } = require('../config')
 
 class Users {
 
   async index(ctx) {
-    ctx.body = await User.find().select('+')
+    ctx.body = await User.find()
   }
 
   async getById(ctx) {
-    console.log(ctx)
-    let user = await User.findById(ctx.params.id)
+    let { fileds } = ctx.query;
+
+    let seleteFileds = fileds.split(';').filter(k => k).map(k => '+'+k);    
+
+    let user = await User.findById(ctx.params.id).select(seleteFileds)
     if (!user) {
       ctx.throw(404, '用户不存在')
     }
@@ -34,6 +37,13 @@ class Users {
     ctx.verifyParams({
       name: { type: 'string', required: false },
       password: { type: 'string', required: false },
+      avatar_url: { type: 'string', required: false },
+      gender: { type: 'string', required: false },
+      headline: { type: 'string', required: false },
+      locations: { type: 'array', itemType: 'string', required: false },
+      business: { type: 'string', required: false },
+      employments: { type: 'array', itemType: 'object', required: false },
+      educations: { type: 'array', itemType: 'object', required: false },
     })
 
     let user = await User.findByIdAndUpdate(ctx.params.id, ctx.request.body)
@@ -62,7 +72,7 @@ class Users {
     if (!user) { ctx.throw(401, '用户名或密码不正确') }
     const { name, _id } = user
     // 主体 密码 过期时间
-    const token = jswebtoken.sign({ _id, name }, screat, { expiresIn: '1d' })
+    const token = jswebtoken.sign({ _id, name }, secret, { expiresIn: '1d' })
     ctx.body = { token }
   }
 }
