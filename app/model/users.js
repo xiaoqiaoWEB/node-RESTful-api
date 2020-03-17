@@ -60,8 +60,7 @@ const usersSchema = new Schema({
   // 关注
   following: {
     type: [
-      // ref: 'User'  引用
-      { type: Schema.Types.ObjectId, ref: 'User' }
+      { type: Schema.Types.ObjectId, ref: 'users' }
     ],
     select: false,
   },

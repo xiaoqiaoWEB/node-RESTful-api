@@ -4,7 +4,7 @@ const jsonwebtoken = require('jsonwebtoken')
 const jwt = require('koa-jwt');
 const { secret } = require('../config')
 
-const { index, add, getById, update, del, login, checkOwner } = require('../controllers/users')
+const { index, add, getById, update, del, login, checkOwner, followingList, checkUserExist, following, unfollowing, listFollowers} = require('../controllers/users')
 
 // const auth = async (ctx, next) => {
 //   const { authorization = '' } = ctx.request.header;
@@ -18,18 +18,17 @@ const { index, add, getById, update, del, login, checkOwner } = require('../cont
 //   await next();
 // }
 
-const auth = jwt({secret})
+const auth = jwt({ secret })
 
 router.get('/', index)
-
 router.post('/', add)
-
 router.get('/:id', getById)
-
 router.patch('/:id', auth, checkOwner, update)
-
 router.delete('/:id', auth, checkOwner, del)
-
 router.post('/login', login)
+router.get('/:id/following', followingList)
+router.get('/:id/followers', listFollowers)
+router.put('/following/:id', auth, checkUserExist, following)
+router.delete('/following/:id', auth, checkUserExist, unfollowing)
 
 module.exports = router;

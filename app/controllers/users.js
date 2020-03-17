@@ -4,14 +4,23 @@ const { secret } = require('../config')
 
 class Users {
 
+  // 关注 取消关注是 判断用户是否存在
+  async checkUserExist(ctx, next) {
+    const user = await User.findById(ctx.params.id);
+    if(!user) {
+      ctx.throw(404, '用户不存在！')
+    }
+    await next();
+  }
+
   async index(ctx) {
     ctx.body = await User.find()
   }
 
   async getById(ctx) {
-    let { fileds } = ctx.query;
+    let { fileds = '' } = ctx.query;
 
-    let seleteFileds = fileds.split(';').filter(k => k).map(k => '+'+k);    
+    let seleteFileds = fileds.split(';').filter(k => k).map(k => '+' + k);
 
     let user = await User.findById(ctx.params.id).select(seleteFileds)
     if (!user) {
@@ -74,6 +83,40 @@ class Users {
     // 主体 密码 过期时间
     const token = jswebtoken.sign({ _id, name }, secret, { expiresIn: '1d' })
     ctx.body = { token }
+  }
+
+  // 特定用户的 关注者
+  async followingList(ctx) {
+    let user = await User.findById(ctx.params.id).select('+following').populate('following')
+    if (!user) { ctx.throw(404, '用户不存在') }
+    ctx.body = user.following;
+  }
+
+  // 粉丝 列表
+  async listFollowers(ctx) {
+    const users = await User.find({following: ctx.params.id})
+    ctx.body = users;
+  }
+  
+  // 关注一个人
+  async following(ctx) {
+    const me = await User.findById(ctx.state.user._id).select('+following');
+    if(!me.following.map(k => k.toString()).includes(ctx.params.id)) {
+      me.following.push(ctx.params.id)
+      me.save()
+    }
+    ctx.status = 204;
+  }
+
+  // 取消关注 一个人
+  async unfollowing (ctx) {
+    const me = await User.findById(ctx.state.user._id).select('+following');
+    const index = me.following.map(k => k.toString()).indexOf(ctx.params.id)
+    if(index > -1) {
+      me.following.splice(index, 1)
+      me.save()
+    }
+    ctx.status = 204;
   }
 }
 
