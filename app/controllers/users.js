@@ -14,7 +14,19 @@ class Users {
   }
 
   async index(ctx) {
-    ctx.body = await User.find()
+    let { fileds = '', pre_page = 5} = ctx.query;
+    let page = Math.max(ctx.query.page * 1, 1) - 1;
+    let prePage = Math.max(pre_page * 1, 1);
+    let seleteFileds = fileds.split(';').filter(k => k).map(k => '+' + k);
+    let toal = await User.find().count();
+    let data = await User.find().limit(prePage).skip(prePage*page).select(seleteFileds);
+
+    ctx.body = {
+      toal,
+      page: page+1,
+      pre_page: prePage,
+      result: data
+    }
   }
 
   async getById(ctx) {
