@@ -32,9 +32,18 @@ class Users {
   async getById(ctx) {
     let { fileds = '' } = ctx.query;
 
-    let seleteFileds = fileds.split(';').filter(k => k).map(k => '+' + k);
+    let seleteFileds = fileds.split(';').filter(k => k).map(k => '+' + k)
+    let populateStr = fileds.split(';').filter(k => k).map(k => {
+      if(k == 'employments') {
+        return 'employments.company employments.job'
+      }
+      if(k == 'educations') {
+        return 'educations.school educations.major'
+      }
+      return k;
+    }).join(' ');
 
-    let user = await User.findById(ctx.params.id).select(seleteFileds)
+    let user = await User.findById(ctx.params.id).select(seleteFileds).populate(populateStr)
     if (!user) {
       ctx.throw(404, '用户不存在')
     }
