@@ -9,8 +9,8 @@ class TopicCtl {
     let prePage = Math.max(pre_page * 1, 1);
     let seleteFileds = fileds.split(';').filter(k => k).map(k => '+' + k);
 
-    let toal = await Topic.find().count();
-    let data = await Topic.find().limit(prePage).skip(prePage*page).select(seleteFileds)
+    let toal = await Topic.find({name: new RegExp(ctx.query.q)}).count();
+    let data = await Topic.find({name: new RegExp(ctx.query.q)}).limit(prePage).skip(prePage*page).select(seleteFileds)
 
     ctx.body = {
       toal,
