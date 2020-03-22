@@ -63,6 +63,13 @@ const usersSchema = new Schema({
     ],
     select: false,
   },
+  // 话题
+  followingTopics: {
+    type: [
+      {type: Schema.Types.ObjectId, ref: 'topic'}
+    ],
+    select: false
+  }
 })
 
 module.exports = model('users', usersSchema);

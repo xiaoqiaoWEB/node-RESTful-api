@@ -139,6 +139,38 @@ class Users {
     }
     ctx.status = 204;
   }
+
+  // 关注的话题列表
+  async listfollowingTopics(ctx) {
+    const user = await User.findById(ctx.params.id).select('+followingTopics').populate('followingTopics');
+    if (!user) { ctx.throw(404, '用户不存在'); }
+    ctx.body = user.followingTopics;
+  }
+
+  // 关注话题
+  async followingTopics (ctx) {
+    const me = await User.findById(ctx.state.user._id).select('+followingTopics');
+    console.log(me.followingTopics.map(k => k.toString()).includes(ctx.params.id))
+
+    if(me.followingTopics.map(k => k.toString()).includes(ctx.params.id)) {
+      console.log('ggg')
+    } else {
+      me.followingTopics.push(ctx.params.id);
+      me.save ();
+    }
+    ctx.status = 204;
+  }
+
+  // 取消关注话题
+  async unfollowingTopics(ctx) {
+    const me = await User.findById(ctx.state.user._id).select('+followingTopics');
+    const index = me.followingTopics.map(k => k.toString()).indexOf(ctx.params.id);
+    if(index > -1) {
+      me.followingTopics.splice(index, 1);
+      me.save();
+    }
+    ctx.status = 204;
+  }
 }
 
 module.exports = new Users();

@@ -1,7 +1,17 @@
 const Topic = require('../model/topics')
+const User = require('../model/users')
 // const { secret } = require('../config')
 
 class TopicCtl {
+
+  // 关注话题是否存在
+  async checkTopicExist(ctx, next) {
+    const topic = await Topic.findById(ctx.params.id);
+    if(!topic) {
+      ctx.throw(404, '话题不存在！')
+    }
+    await next();
+  }
 
   async find(ctx) {
     let { fileds = '', pre_page = 5} = ctx.query;
@@ -49,6 +59,12 @@ class TopicCtl {
     let data = await Topic.findByIdAndUpdate(ctx.params.id, ctx.request.body)
 
     ctx.body = ctx.request.body;
+  }
+
+  // 话题的关注用户
+  async listFollowers(ctx) {
+    const users = await User.find({followingTopics: ctx.params.id})
+    ctx.body = users;
   }
 }
 
