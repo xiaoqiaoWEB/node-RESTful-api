@@ -66,7 +66,7 @@ const usersSchema = new Schema({
   // 话题
   followingTopics: {
     type: [
-      {type: Schema.Types.ObjectId, ref: 'topic'}
+      {type: Schema.Types.ObjectId, ref: 'topics'}
     ],
     select: false
   }
