@@ -1,4 +1,5 @@
 const User = require('../model/users')
+const Question = require('../model/question')
 const jswebtoken = require('jsonwebtoken')
 const { secret } = require('../config')
 
@@ -170,6 +171,12 @@ class Users {
       me.save();
     }
     ctx.status = 204;
+  }
+  
+  // 用户的问题列表
+  async qusettionsList (ctx) {
+    const quetions = await Question.find({questioner: ctx.params.id});
+    ctx.body = quetions;
   }
 }
 

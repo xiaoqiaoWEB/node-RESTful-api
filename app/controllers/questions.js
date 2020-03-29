@@ -11,6 +11,12 @@ class QusetionCtl {
     await next();
   }
 
+  async checkQuestioner(ctx, next) {
+    const { question } = ctx.state;
+    if (question.questioner.toString() !== ctx.state.user._id) { ctx.throw(403, '没有权限'); }
+    await next();
+  }
+
   async find(ctx) {
     let { fileds = '', pre_page = 5} = ctx.query;
     let page = Math.max(ctx.query.page * 1, 1) - 1;
@@ -49,13 +55,6 @@ class QusetionCtl {
     const question = 
       await new Qusetions({...ctx.request.body, questioner: ctx.state.user._id}).save();
     ctx.body = question;
-  }
-
-  async checkQuestioner(ctx, next) {
-    const { question } = ctx.state;
-    console.log(question)
-    if (question.questioner.toString() !== ctx.state.user._id) { ctx.throw(403, '没有权限'); }
-    await next();
   }
 
   async update(ctx) {

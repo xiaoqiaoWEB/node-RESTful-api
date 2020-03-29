@@ -1,5 +1,6 @@
 const Topic = require('../model/topics')
 const User = require('../model/users')
+const Question = require('../model/question')
 // const { secret } = require('../config')
 
 class TopicCtl {
@@ -65,6 +66,12 @@ class TopicCtl {
   async listFollowers(ctx) {
     const users = await User.find({followingTopics: ctx.params.id})
     ctx.body = users;
+  }
+
+  // 话题的 问题列表
+  async listQuestion(ctx) {
+    const questions = await Question.find({ topics: ctx.params.id });
+    ctx.body = questions;
   }
 }
 
