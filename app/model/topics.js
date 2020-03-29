@@ -19,4 +19,4 @@ const topicsSchema = new Schema({
   }
 })
 
-module.exports = model('topic', topicsSchema);
+module.exports = model('topics', topicsSchema);

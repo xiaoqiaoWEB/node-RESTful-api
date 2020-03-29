@@ -21,7 +21,7 @@ const questionSchema = new Schema({
     select: false
   },
   topics: {
-    type: [{ type: Schema.Types.ObjectId, ref:'topic'}],
+    type: [{ type: Schema.Types.ObjectId, ref:'topics'}],
     select: false
   }
 })

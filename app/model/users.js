@@ -29,26 +29,26 @@ const usersSchema = new Schema({
     type: String
   },
   locations: {
-    type: [{ type: Schema.Types.ObjectId, ref:'topic' }],
+    type: [{ type: Schema.Types.ObjectId, ref:'topics' }],
     select: false
   },
   business: {
     type: Schema.Types.ObjectId, 
-    ref:'topic',
+    ref:'topics',
     select: false
   },
   employments: {
     type: [{ 
-      company: { type: Schema.Types.ObjectId, ref:'topic' },
-      job: { type: Schema.Types.ObjectId, ref:'topic' }
+      company: { type: Schema.Types.ObjectId, ref:'topics' },
+      job: { type: Schema.Types.ObjectId, ref:'topics' }
     }],
     select: false
   },
   educations: {
     type: [
       {
-        school: { type: Schema.Types.ObjectId, ref:'topic' },
-        major: { type: Schema.Types.ObjectId, ref:'topic' },
+        school: { type: Schema.Types.ObjectId, ref:'topics' },
+        major: { type: Schema.Types.ObjectId, ref:'topics' },
         diploma: { type: Number, enum: [1, 2, 3, 4, 5] },
         entrance_year: { type: Number },
         graduation_year: { type: Number },
