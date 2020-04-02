@@ -8,7 +8,8 @@ const {
     index, add, getById, update, del, login, checkOwner, 
     followingList, checkUserExist, following, unfollowing, 
     listFollowers, listfollowingTopics, followingTopics, unfollowingTopics,
-    qusettionsList 
+    qusettionsList,
+    listLikingAsnwers, likingAswers
   } = require('../controllers/users');
 
 const {checkTopicExist} = require('../controllers/topics');
@@ -41,5 +42,7 @@ router.get('/:id/followingtopic', listfollowingTopics)
 router.put('/followingtopic/:id', auth, checkTopicExist, followingTopics)
 router.delete('/followingtopic/:id', auth, checkTopicExist, unfollowingTopics)
 router.get('/:id/qusettions', qusettionsList)
+router.get('/:id/likingAswers', listLikingAsnwers)
+router.put('/likingAswers/:id', auth, likingAswers)
 
 module.exports = router;

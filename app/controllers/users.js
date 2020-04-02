@@ -1,5 +1,6 @@
 const User = require('../model/users')
 const Question = require('../model/question')
+const Asnwer = require('../model/answers')
 const jswebtoken = require('jsonwebtoken')
 const { secret } = require('../config')
 
@@ -177,6 +178,24 @@ class Users {
   async qusettionsList (ctx) {
     const quetions = await Question.find({questioner: ctx.params.id});
     ctx.body = quetions;
+  }
+
+  // 用户的点赞列表
+  async listLikingAsnwers(ctx) {
+    const user = await User.findById(ctx.params.id).select('+likingAnswers').populate('likingAnswers');
+    if(!user) {ctx.throw(404, '用户不存在！')}
+    ctx.body = user.likingAnswers;
+  }
+
+  // 点赞
+  async likingAswers(ctx) {
+    const me = await User.findById(ctx.state.user._id).select('+likingAnswers');
+    if(!me.likingAnswers.map(id => id.toString()).includes(ctx.params.id)) {
+      me.likingAnswers.push(ctx.params.id);
+      me.save();
+      await Asnwer.findByIdAndUpdate(ctx.params.id, { $inc: { voteCount: 1 } });
+    }
+    ctx.body = 204
   }
 }
 

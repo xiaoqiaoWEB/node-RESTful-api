@@ -69,6 +69,20 @@ const usersSchema = new Schema({
       {type: Schema.Types.ObjectId, ref: 'topics'}
     ],
     select: false
+  },
+  // 赞问题
+  likingAnswers: {
+    type:[
+      {type: Schema.Types.ObjectId, ref: 'answers'}
+    ],
+    select: false
+  },
+  // 踩问题
+  dislikingAnswers: {
+    type: [
+      {type: Schema.Types.ObjectId, ref: 'answers'}
+    ],
+    select: false
   }
 })
 

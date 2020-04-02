@@ -28,7 +28,7 @@ class AnswerCtl {
 
     let answer = await Answer
       .find({content: q, questionId: ctx.params.questionId})
-      .limit(prePage).skip(page * prePage);
+      .limit(prePage).skip(page * prePage).select('+answerer').populate('answerer');
     
     ctx.body = answer;
   }
